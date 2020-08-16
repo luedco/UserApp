@@ -1,78 +1,150 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="(user,index) in users" :key="index+lastName+name">{{user.name}} {{user.lastName}}</li>
-        </ul>
-        <button v-on:click="isHidden = !isHidden">Add Componente</button>
-        <div v-if="!isHidden" >
-            <input v-model="newUserName">
-            <br>
-            <input v-model="newUserlName">
-            <br>
-            <button @click="addUser" class="button" v-on:click="isHidden=true">Icono</button>
-        </div>
+  <div class="user-grid-displayer">
+    <div class="display-user" v-if="!displayHidden">
+      <div class="img-container">
+        <img :src="displayImage" alt="no hay:c" />
+      </div>
+
+      <p>Nombre: {{displayName}}</p>
+      <p>Apellido: {{displayLastName}}</p>
     </div>
-     
+    <div
+      class="user-container hex"
+      v-for="(user,index) in users"
+      :key="index"
+      @click="displayUser(user,index)"
+      v-on:click="displayHidden = !displayHidden"
+    >
+      <a v-if="users.length===0">No hay users</a>
+      <a class="btn-user">{{user.name}} {{user.lastName}}</a>
+    </div>
+
+    <button v-on:click="isHidden = !isHidden">Add Componente</button>
+    <div v-if="!isHidden">
+      <input type="file" @change="onFileChange($event)"/>
+      <br />
+      <input v-model="newUserName" />
+      <br />
+      <input v-model="newUserlName" />
+      <br />
+      <button @click="addUser()" class="button" v-on:click="isHidden=true">Icono</button>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: "MiComponente",
-    data(){
-        return{
-            isHidden:true,
-            newUserName:"",
-            newUserlName:"",
-            users:[
-                {
-                    name:"Luis",
-                    lastName:"Cortez",
-                    imageUrl:""
-                },
-                {
-                    name:"Eduardo",
-                    lastName:"Murillo",
-                    imageUrl:""
-                }
-                ,{
-                    name:"Vale",
-                    lastName:"Cortez",
-                    imageUrl:""
-                }
-                ]
-        }
-        
+  name: "MiComponente",
+  data() {
+    return {
+      isHidden: true,
+      newUserName: "",
+      newUserlName: "",
+      newUserUrl: "",
+      displayName: "",
+      displayLastName: "",
+      displayImage: "",
+      displayHidden: true,
+      users: [
+        {
+          name: "Luis",
+          lastName: "Cortez",
+          imageUrl: "",
+        },
+        {
+          name: "Eduardo",
+          lastName: "Murillo",
+          imageUrl: "",
+        },
+        {
+          name: "Vale",
+          lastName: "Cortez",
+          imageUrl: "",
+        },
+      ],
+    };
+  },
+  methods: {
+    addUser() {
+       let index=this.users.length;
+      console.log("AddUser"+index)
+      if (this.newUserName !== "" || this.newUserlName !== "") {
+        this.users.push({
+          name: this.newUserName,
+          lastName: this.newUserlName,
+        });
+        this.newUserName = "";
+        this.newUserlName = "";
+      }
+      
     },
-    methods:{
-        addUser(){
-            if(this.newUserName !== '' || this.newUserlName !==''){
-                this.users.push({
-                    name:this.newUserName,
-                    lastName:this.newUserlName
-                })
-                this.newUserName = ""
-                this.newUserlName = ""
-            }
-        }
-    }
-}
+    displayUser(user, index) {
+      console.log(
+        index + " " + user.name + " " + user.lastName + " "
+      );
+      this.displayName = user.name;
+      this.displayLastName = user.lastName;
+      this.displayImage = user.imageUrl;
+    },
+    onFileChange(e){
+      let index=this.users.length-1;
+      console.log("FileChange"+index)
+      /*this.users.push({
+        name:"",
+        lastName:"",
+        imageUrl:""
+      })*/
+      var files = e.target.files ||  e.dataTransfer.files
+      if (!files.length) {return;}
+      this.createImage(this.users[index], files[0]);
+    },
+    createImage(item, file) {
+      var image = new Image();
+      var reader = new FileReader();
+      console.log(image);
+      reader.onload = (e) => {
+        item.imageUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+  },
+};
 </script>
 <style>
-.miC{
-    background-color: red;
+.miC {
+  background-color: red;
 }
 
-.users{
-    border-top:1px solid #ddd;
+.users {
+  border-top: 1px solid #ddd;
 }
 
-.name{
-    float: left;
-   
+.user-grid-displayer {
+  display: grid;
+}
+.user-container {
+  background: blue;
+
+  color: black;
+}
+.btn-user {
+  text-decoration: none;
 }
 
-.lastname{
-    float: right;
-    
+.hex {
+  height: 45px;
+  width: 45px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: red;
+  border-width: 2px;
+}
+.img-container {
+  display: grid;
+  height: 167px;
+  width: 191px;
+}
+.img-item {
+  height: 149px;
+  width: 172px;
 }
 </style>
