@@ -66,13 +66,21 @@ export default {
   },
   methods: {
     addUser() {
-       let index=this.users.length;
+       let index=this.users.length-1;
       console.log("AddUser"+index)
       if (this.newUserName !== "" || this.newUserlName !== "") {
+        /**
+         * Esta funcion ya no crea usuarios, solo toma el indice y agrega los campos que faltan
+         */
+        /*
         this.users.push({
           name: this.newUserName,
           lastName: this.newUserlName,
-        });
+        });*/
+        
+        //AgregarNuevosCampos
+
+        this.users[index].name =this.newUserName
         this.newUserName = "";
         this.newUserlName = "";
       }
@@ -87,16 +95,25 @@ export default {
       this.displayImage = user.imageUrl;
     },
     onFileChange(e){
-      let index=this.users.length-1;
-      console.log("FileChange"+index)
-      /*this.users.push({
+      /**
+       * Como esta funcion se manda a llamar antes de agregar al usuario actual 
+       * en la lista de users no existe todavía
+       * length devuelve 3 (originales)
+       */
+      /**
+       * Objetivo: crear el usuario aqui y solo agregar los campos faltantes en addUser()
+       */
+
+      this.users.push({
         name:"",
         lastName:"",
         imageUrl:""
-      })*/
+      })
+      let index=this.users.length;
+      console.log("FileChange"+index)
       var files = e.target.files ||  e.dataTransfer.files
       if (!files.length) {return;}
-      this.createImage(this.users[index], files[0]);
+      this.createImage(this.users[index-1], files[0]);
     },
     createImage(item, file) {
       var image = new Image();
