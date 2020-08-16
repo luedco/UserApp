@@ -81,6 +81,7 @@ export default {
         //AgregarNuevosCampos
 
         this.users[index].name =this.newUserName
+        this.users[index].lastName =this.newUserlName
         this.newUserName = "";
         this.newUserlName = "";
       }
