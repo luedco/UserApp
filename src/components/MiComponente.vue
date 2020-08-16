@@ -16,7 +16,7 @@
       v-on:click="displayHidden = !displayHidden"
     >
       <a v-if="users.length===0">No hay users</a>
-      <a class="btn-user">{{user.name}} {{user.lastName}}</a>
+      <a class="btn-user"><img :src="user.imageUrl" class="img-display-item"/></a>
     </div>
 
     <button v-on:click="isHidden = !isHidden">Add Componente</button>
@@ -46,21 +46,7 @@ export default {
       displayImage: "",
       displayHidden: true,
       users: [
-        {
-          name: "Luis",
-          lastName: "Cortez",
-          imageUrl: "",
-        },
-        {
-          name: "Eduardo",
-          lastName: "Murillo",
-          imageUrl: "",
-        },
-        {
-          name: "Vale",
-          lastName: "Cortez",
-          imageUrl: "",
-        },
+
       ],
     };
   },
@@ -164,5 +150,11 @@ export default {
 .img-item {
   height: 149px;
   width: 172px;
+}
+
+.img-display-item{
+  height: 45px;
+  width: 45px;
+  align-content: center;
 }
 </style>
