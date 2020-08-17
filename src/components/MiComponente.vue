@@ -1,33 +1,56 @@
 <template>
   <div class="user-grid-displayer">
-    <div class="display-user" v-if="!displayHidden">
-      <div class="img-container">
-        <img :src="displayImage" alt="no hay:c" />
+    <h1>Prueba IT</h1>
+    <div class="all-user">
+      
+      <div class="display-user">
+        <div  v-if="!displayHidden">
+          <div class="img-container">
+            <img :src="displayImage" alt="no hay:c" class="img-item" />
+          </div>
+          <p>Nombre: {{displayName}}</p>
+          <p>Apellido: {{displayLastName}}</p>
+        </div>
       </div>
 
-      <p>Nombre: {{displayName}}</p>
-      <p>Apellido: {{displayLastName}}</p>
-    </div>
-    <div
-      class="user-container hex"
-      v-for="(user,index) in users"
-      :key="index"
-      @click="displayUser(user,index)"
-      v-on:click="displayHidden = !displayHidden"
-    >
-      <a v-if="users.length===0">No hay users</a>
-      <a class="btn-user"><img :src="user.imageUrl" class="img-display-item"/></a>
-    </div>
 
-    <button v-on:click="isHidden = !isHidden">Add Componente</button>
-    <div v-if="!isHidden">
-      <input type="file" @change="onFileChange($event)"/>
-      <br />
-      <input v-model="newUserName" />
-      <br />
-      <input v-model="newUserlName" />
-      <br />
-      <button @click="addUser()" class="button" v-on:click="isHidden=true">Icono</button>
+      <div class="section2">
+        <h2>Usuarios</h2>
+        <div class="section2-sub">
+          <div class="user-container">
+            <a v-if="this.users.length===0">
+              <img src="../assets/empty.svg" alt="SVG ICON" class="img-user-none"/>
+            </a>
+            <div
+              class="hex"
+              v-for="(user,index) in users"
+              :key="index"
+              @click="displayUser(user,index)"
+              v-on:click="displayHidden = !displayHidden"
+            >
+              <a class="btn-user">
+                <img :src="user.imageUrl" class="img-display-item" />
+              </a>
+            </div>
+          </div>
+          <button v-on:click="isHidden = !isHidden" class="btn-addUser">
+            <img src="../assets/icono agregar usuario.svg" alt="SVG ICON" class="img-user-add"/>
+          </button>
+        </div>
+      </div>
+
+      <div class="all-addUser">
+        <div v-if="!isHidden" class="sub-all-addUser">
+          <input type="file" @change="onFileChange($event)" class="user-file" />
+          <div class="user-input">
+            <input v-model="newUserName" class="user-input-name" />
+            <input v-model="newUserlName" class="user-input-lName" />
+          </div>
+          <button @click="addUser()" class="buttonAddUser" v-on:click="isHidden=true">Icono</button>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -45,15 +68,13 @@ export default {
       displayLastName: "",
       displayImage: "",
       displayHidden: true,
-      users: [
-
-      ],
+      users: [],
     };
   },
   methods: {
     addUser() {
-       let index=this.users.length-1;
-      console.log("AddUser"+index)
+      let index = this.users.length - 1;
+      console.log("AddUser" + index);
       if (this.newUserName !== "" || this.newUserlName !== "") {
         /**
          * Esta funcion ya no crea usuarios, solo toma el indice y agrega los campos que faltan
@@ -63,27 +84,24 @@ export default {
           name: this.newUserName,
           lastName: this.newUserlName,
         });*/
-        
+
         //AgregarNuevosCampos
 
-        this.users[index].name =this.newUserName
-        this.users[index].lastName =this.newUserlName
+        this.users[index].name = this.newUserName;
+        this.users[index].lastName = this.newUserlName;
         this.newUserName = "";
         this.newUserlName = "";
       }
-      
     },
     displayUser(user, index) {
-      console.log(
-        index + " " + user.name + " " + user.lastName + " "
-      );
+      console.log(index + " " + user.name + " " + user.lastName + " ");
       this.displayName = user.name;
       this.displayLastName = user.lastName;
       this.displayImage = user.imageUrl;
     },
-    onFileChange(e){
+    onFileChange(e) {
       /**
-       * Como esta funcion se manda a llamar antes de agregar al usuario actual 
+       * Como esta funcion se manda a llamar antes de agregar al usuario actual
        * en la lista de users no existe todavía
        * length devuelve 3 (originales)
        */
@@ -92,15 +110,17 @@ export default {
        */
 
       this.users.push({
-        name:"",
-        lastName:"",
-        imageUrl:""
-      })
-      let index=this.users.length;
-      console.log("FileChange"+index)
-      var files = e.target.files ||  e.dataTransfer.files
-      if (!files.length) {return;}
-      this.createImage(this.users[index-1], files[0]);
+        name: "",
+        lastName: "",
+        imageUrl: "",
+      });
+      let index = this.users.length;
+      console.log("FileChange" + index);
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) {
+        return;
+      }
+      this.createImage(this.users[index - 1], files[0]);
     },
     createImage(item, file) {
       var image = new Image();
@@ -115,6 +135,9 @@ export default {
 };
 </script>
 <style>
+.h1 {
+  align-content: center;
+}
 .miC {
   background-color: red;
 }
@@ -125,16 +148,80 @@ export default {
 
 .user-grid-displayer {
   display: grid;
-}
-.user-container {
-  background: blue;
-
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
   color: black;
 }
+.all-user {
+  width: 720px;
+  height: 720px;
+  background: #9E96A6;
+  display: flex;
+  flex-direction: column;
+}
+.user-container {
+  width: 431px;
+  height: 86px;
+  background: white;
+  display: flex;
+  margin-right: 10px;
+  justify-content: center;
+}
+
+.img-user-none{
+  width:99.69px;
+  height: 78px;
+  
+}
+.all-addUser {
+  display: flex;
+  flex-direction: row;
+  padding: 100px;
+}
+.img-user-add{
+  width:76px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-radius: 75px;
+
+}
+.sub-all-addUser {
+  display: flex;
+  flex-direction: row;
+}
+.user-input {
+  margin: 10px;
+  align-content: space-between;
+  justify-content: space-around;
+    border-radius: 150px;
+}
+
+.user-input-name .user-input-lName {
+  width: 300px;
+  height: 40px;
+  font-size: 14pt;
+  border-radius: 25px;
+}
+
+
 .btn-user {
   text-decoration: none;
 }
-
+.btn-addUser {
+  height: 86px;
+  width: 86px;
+  display: flex;
+}
+.section2-sub {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 .hex {
   height: 45px;
   width: 45px;
@@ -142,19 +229,25 @@ export default {
   border: red;
   border-width: 2px;
 }
-.img-container {
-  display: grid;
-  height: 167px;
-  width: 191px;
-}
+
 .img-item {
   height: 149px;
   width: 172px;
 }
-
-.img-display-item{
+.display-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 288px;
+}
+.img-display-item {
   height: 45px;
   width: 45px;
   align-content: center;
 }
+.buttonAddUser{
+  height: 86px;
+  width: 86px;
+}
+
 </style>
