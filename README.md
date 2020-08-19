@@ -7,6 +7,6 @@ npm run serve
 
 ### Project Port
 ```
-localhost.8080
+localhost:8080
 ```
 
