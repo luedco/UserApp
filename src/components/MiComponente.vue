@@ -5,8 +5,8 @@
       
       <div class="display-user">
         <div  v-if="!displayHidden">
-          <div class="img-container">
-            <img :src="displayImage" alt="no hay:c" class="img-item" />
+          <div class="img-container" >
+            <img :src="displayImage" alt="no hay:c" class="img-item" @click="editUser(index)"/>
           </div>
           <p>Nombre: {{displayName}}</p>
           <p>Apellido: {{displayLastName}}</p>
@@ -18,7 +18,7 @@
         <h2>Usuarios</h2>
         <div class="section2-sub">
           <div class="user-container">
-            <a v-if="this.users.length===0">
+            <a v-if="this.users.length===0" class="img-item-svg">
               <img src="../assets/empty.svg" alt="SVG ICON" class="img-user-none"/>
             </a>
             <div
@@ -46,7 +46,9 @@
             <input v-model="newUserName" class="user-input-name" />
             <input v-model="newUserlName" class="user-input-lName" />
           </div>
-          <button @click="addUser()" class="buttonAddUser" v-on:click="isHidden=true">Icono</button>
+          <button @click="addUser()" class="buttonAddUser" v-on:click="isHidden=true">
+            <img src="../assets/icono save.svg" alt="SVG ICON"/>
+          </button>
         </div>
       </div>
 
@@ -92,6 +94,9 @@ export default {
         this.newUserName = "";
         this.newUserlName = "";
       }
+    },
+    editUser(index){
+      console.log("edit indx  "+index);
     },
     displayUser(user, index) {
       console.log(index + " " + user.name + " " + user.lastName + " ");
@@ -161,6 +166,8 @@ export default {
   background: #9E96A6;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .user-container {
   width: 431px;
@@ -169,6 +176,8 @@ export default {
   display: flex;
   margin-right: 10px;
   justify-content: center;
+  border-radius: 10px;
+  grid-template-columns: auto auto auto;
 }
 
 .img-user-none{
@@ -196,9 +205,7 @@ export default {
 }
 .user-input {
   margin: 10px;
-  align-content: space-between;
-  justify-content: space-around;
-    border-radius: 150px;
+  border-radius: 25px;
 }
 
 .user-input-name .user-input-lName {
@@ -216,6 +223,7 @@ export default {
   height: 86px;
   width: 86px;
   display: flex;
+  border-radius: 10px;
 }
 .section2-sub {
   display: flex;
@@ -226,10 +234,16 @@ export default {
   height: 45px;
   width: 45px;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  border: red;
-  border-width: 2px;
 }
-
+.img-container{
+  width: 191px;
+  height: 167px;
+  border-radius: 10px;
+  justify-content: center;
+  background: whitesmoke;
+  align-content: center;
+  display: grid;
+}
 .img-item {
   height: 149px;
   width: 172px;
@@ -244,10 +258,12 @@ export default {
   height: 45px;
   width: 45px;
   align-content: center;
+  background: url("../assets/icono hexágono.svg");
 }
 .buttonAddUser{
   height: 86px;
   width: 86px;
+  border-radius: 10px;
 }
 
 </style>
